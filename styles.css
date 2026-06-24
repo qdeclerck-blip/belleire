@@ -95,6 +95,16 @@ button {
   padding: 1rem;
 }
 
+/* ─── Honeypot anti-spam — caché aux humains, visible aux bots ─── */
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+}
+
 /* ─── Responsive layout ─── */
 
 .nav-bar   { padding: 0 48px; }
