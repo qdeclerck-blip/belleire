@@ -448,7 +448,7 @@ function Contact() {
       const res = await fetch(FORM_ENDPOINT, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body:    JSON.stringify({ nom: form.nom, email: form.email, message: form.message }),
+        body:    JSON.stringify({ nom: form.nom, email: form.email, message: form.message, _gotcha: honeypot }),
       });
       if (!res.ok) throw new Error();
       localStorage.setItem(LS_KEY, JSON.stringify([...recent, now]));
