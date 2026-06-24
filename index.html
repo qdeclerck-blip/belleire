@@ -94,7 +94,12 @@ function Photo({ src, alt, style = {} }) {
 
 /* ─── Nav ─── */
 function Nav() {
-  const links = ['Bouquets', 'Installations', 'SWAP', 'À propos'];
+  const links = [
+    { label: 'Bouquets',    href: '#bouquets'     },
+    { label: 'Installations', href: '#installations' },
+    { label: 'SWAP',        href: '#swap'          },
+    { label: 'À propos',   href: '#a-propos'      },
+  ];
   return (
     <nav className="nav-bar" style={{
       position: 'sticky', top: 0, zIndex: 200,
@@ -106,14 +111,14 @@ function Nav() {
     }}>
       <span className="logo" style={{ fontSize: '1.45rem', color: '#3D3A2C' }}>belleire</span>
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
-        {links.map(l => {
+        {links.map(({ label, href }) => {
           const [h, setH] = useState(false);
           return (
-            <a key={l} href="#"
+            <a key={label} href={href}
               style={{ fontSize: '0.72rem', letterSpacing: '0.05em', color: h ? '#3D3A2C' : '#7A7A6A', transition: 'color 0.3s' }}
               onMouseEnter={() => setH(true)}
               onMouseLeave={() => setH(false)}>
-              {l}
+              {label}
             </a>
           );
         })}
@@ -177,23 +182,27 @@ function Hero() {
           <span style={{ fontSize: '0.625rem', color: '#7A7A6A', letterSpacing: '0.04em' }}>dans votre espace professionnel</span>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button
-            style={{
+          <a href="#bouquets" style={{ textDecoration: 'none' }}>
+            <button
+              style={{
+                fontFamily: "'Space Mono', monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
+                padding: '10px 22px', background: '#3D3A2C', color: '#F0ECD8',
+                border: 'none', cursor: 'pointer', transition: 'opacity 0.3s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+              voir les bouquets
+            </button>
+          </a>
+          <a href="#swap" style={{ textDecoration: 'none' }}>
+            <button style={{
               fontFamily: "'Space Mono', monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
-              padding: '10px 22px', background: '#3D3A2C', color: '#F0ECD8',
-              border: 'none', cursor: 'pointer', transition: 'opacity 0.3s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-            voir les bouquets
-          </button>
-          <button style={{
-            fontFamily: "'Space Mono', monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
-            padding: '10px 22px', background: 'transparent', color: '#7A7A6A',
-            border: '1px solid rgba(61,58,44,0.22)', cursor: 'pointer',
-          }}>
-            belleire swap
-          </button>
+              padding: '10px 22px', background: 'transparent', color: '#7A7A6A',
+              border: '1px solid rgba(61,58,44,0.22)', cursor: 'pointer',
+            }}>
+              belleire swap
+            </button>
+          </a>
         </div>
       </div>
       <MarqueeBar/>
@@ -211,7 +220,7 @@ const colData = [
 
 function Collections() {
   return (
-    <section className="section-px" style={{ paddingTop: '72px', paddingBottom: '72px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
+    <section id="installations" className="section-px" style={{ paddingTop: '72px', paddingBottom: '72px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
       <div className="blob d3" style={{
         width: '380px', height: '300px', top: '-90px', right: '-70px',
         background: blobWarm, filter: 'blur(84px)', opacity: 0.30,
@@ -298,7 +307,7 @@ function ProductGrid() {
     : products.filter(p => parseInt(p.price) < 100);
 
   return (
-    <section className="section-px" style={{ paddingTop: '72px', paddingBottom: '80px', background: '#EEEADB', position: 'relative', overflow: 'hidden' }}>
+    <section id="bouquets" className="section-px" style={{ paddingTop: '72px', paddingBottom: '80px', background: '#EEEADB', position: 'relative', overflow: 'hidden' }}>
       <div className="blob d2" style={{ width: '300px', height: '240px', bottom: '-60px', left: '-50px', background: blobCool, filter: 'blur(80px)', opacity: 0.40 }}/>
       <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '12px', position: 'relative', zIndex: 2 }}>
         <div>
@@ -335,7 +344,7 @@ function FeatureStrip() {
     ['3 · belleire swap',  'changez quand vous voulez — −25% sur la suivante.'],
   ];
   return (
-    <section className="section-px grid-2col" style={{
+    <section id="swap" className="section-px grid-2col" style={{
       background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px',
       position: 'relative', overflow: 'hidden',
       borderTop: '1px solid rgba(61,58,44,0.13)',
@@ -379,7 +388,7 @@ function FeatureStrip() {
 /* ─── À propos ─── */
 function APropos() {
   return (
-    <section className="section-px grid-2col" style={{
+    <section id="a-propos" className="section-px grid-2col" style={{
       background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px',
       position: 'relative', overflow: 'hidden',
     }}>
