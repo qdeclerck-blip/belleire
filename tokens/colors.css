@@ -1,0 +1,32 @@
+/* belleire Design System — Color Tokens */
+
+:root {
+  --color-parchment:   #F0ECD8;
+  --color-parchment-w: #EEEADB;
+  --color-parchment-l: #F8F5EE;
+  --color-white:       #FFFFFF;
+
+  --blob-warm-1: #E8974A;
+  --blob-warm-2: #D4603A;
+  --blob-warm-3: #CC1FCC;
+
+  --blob-cool-1: #C8E0D8;
+  --blob-cool-2: #A8C4BA;
+  --blob-cool-3: #7EBFB0;
+
+  --color-ink:       #3D3A2C;
+  --color-ink-light: #7A7A6A;
+  --color-ink-muted: #A8A49A;
+
+  --color-rule:        rgba(61, 58, 44, 0.13);
+  --color-rule-strong: rgba(61, 58, 44, 0.22);
+
+  --surface-page:    var(--color-parchment);
+  --surface-card:    var(--color-parchment-l);
+  --surface-card-bg: var(--color-parchment-w);
+  --text-primary:    var(--color-ink);
+  --text-secondary:  var(--color-ink-light);
+  --text-muted:      var(--color-ink-muted);
+  --border-subtle:   var(--color-rule);
+  --border-default:  var(--color-rule-strong);
+}

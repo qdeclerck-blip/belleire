@@ -1,0 +1,96 @@
+/* belleire — Global Styles */
+
+@import url('./tokens/typography.css');
+@import url('./tokens/colors.css');
+@import url('./tokens/spacing.css');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-parchment);
+  font-family: var(--font-mono);
+  color: var(--color-ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ─── Logo / display — Bodoni Moda Light opsz 96 ─── */
+.logo {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: var(--font-opsz);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--tracking-logo);
+  line-height: var(--leading-logo);
+}
+
+/* ─── Blobs ─── */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(14px, -9px) scale(1.04); }
+  66%       { transform: translate(-9px, 7px) scale(0.96); }
+}
+
+.d1 { animation: drift 16s ease-in-out infinite; }
+.d2 { animation: drift 21s ease-in-out infinite; animation-delay: -8s; }
+.d3 { animation: drift 18s ease-in-out infinite; animation-delay: -13s; }
+
+/* ─── Séparateur ─── */
+.hl {
+  height: 1px;
+  background: var(--color-rule);
+  width: 100%;
+}
+
+/* ─── Marquee ─── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── Placeholder photo (en attendant les vraies images) ─── */
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-parchment-w);
+  color: var(--color-ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem;
+}

@@ -1,0 +1,46 @@
+/* belleire — Typography Tokens
+ * Police principale : Blake 2.0 by Barrett RM Type (licence requise)
+ * Proxy Google Fonts : Bodoni Moda opsz 96, weight 300
+ * Police secondaire : Space Mono 400
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,700;1,6..96,300;1,6..96,400&family=Space+Mono&display=swap');
+
+:root {
+  --font-display: 'Bodoni Moda', Georgia, serif;
+  --font-mono:    'Space Mono', Menlo, 'Courier New', monospace;
+  --font-primary: var(--font-display);
+
+  --font-opsz:    'opsz' 96;
+  --font-logo-ls: -0.03em;
+  --font-logo-lh: 0.88;
+
+  --text-xs:   0.625rem;
+  --text-sm:   0.75rem;
+  --text-base: 0.9375rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.5rem;
+  --text-xl:   2rem;
+  --text-2xl:  3rem;
+  --text-3xl:  5rem;
+  --text-4xl:  8rem;
+
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-bold:    700;
+
+  --leading-logo:  0.88;
+  --leading-tight: 1.1;
+  --leading-snug:  1.4;
+  --leading-body:  1.75;
+  --leading-loose: 2.1;
+
+  --tracking-logo:    -0.03em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.04em;
+  --tracking-widest:   0.10em;
+
+  --ease-elegant:    cubic-bezier(.22, 1, .36, 1);
+  --transition-base: 0.3s;
+}
