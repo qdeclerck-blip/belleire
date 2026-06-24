@@ -483,7 +483,7 @@ function Contact() {
     padding: '8px 0', color: '#3D3A2C', outline: 'none', width: '100%',
   };
   return (
-    <section className="section-px" style={{ background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" className="section-px" style={{ background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px', position: 'relative', overflow: 'hidden' }}>
       <div className="blob" style={{ width: '320px', height: '260px', top: '-60px', right: '-40px', background: blobWarm, filter: 'blur(100px)', opacity: 0.28 }}/>
       <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '20px' }}>nous joindre</span>
@@ -565,9 +565,21 @@ function Contact() {
 /* ─── Footer ─── */
 function Footer() {
   const cols = [
-    { title: 'bouquets', links: ["feu d'artifice", 'flamingo', 'sombrero', 'carnaval', 'popcorn', 'eventail pastel'] },
-    { title: 'aide',     links: ['livraison', 'belleire swap', 'abonnement mensuel', 'contact'] },
-    { title: 'belleire', links: ['à propos', 'belleire.be', 'laure dykmans'] },
+    { title: 'bouquets', links: [
+      { label: "feu d'artifice", href: '#bouquets' },
+      { label: 'flamingo',       href: '#bouquets' },
+      { label: 'sombrero',       href: '#bouquets' },
+      { label: 'carnaval',       href: '#bouquets' },
+      { label: 'popcorn',        href: '#bouquets' },
+      { label: 'eventail pastel',href: '#bouquets' },
+    ]},
+    { title: 'aide', links: [
+      { label: 'belleire swap', href: '#swap'    },
+      { label: 'contact',       href: '#contact' },
+    ]},
+    { title: 'belleire', links: [
+      { label: 'à propos', href: '#a-propos' },
+    ]},
   ];
   return (
     <footer className="section-px" style={{ background: '#EEEADB', paddingTop: '52px', paddingBottom: '32px', borderTop: '1px solid rgba(61,58,44,0.13)', position: 'relative', overflow: 'hidden' }}>
@@ -585,11 +597,11 @@ function Footer() {
               {col.links.map(l => {
                 const [h, setH] = useState(false);
                 return (
-                  <a key={l} href="#"
+                  <a key={l.label} href={l.href}
                     style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', color: h ? '#3D3A2C' : '#7A7A6A', letterSpacing: '0.03em', transition: 'color 0.3s' }}
                     onMouseEnter={() => setH(true)}
                     onMouseLeave={() => setH(false)}>
-                    {l}
+                    {l.label}
                   </a>
                 );
               })}
