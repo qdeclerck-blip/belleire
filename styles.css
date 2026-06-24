@@ -177,12 +177,6 @@ button {
   .footer-bottom    { flex-direction: column; gap: 8px; }
 }
 
-/* Très petit écran — ≤ 480px */
-@media (max-width: 480px) {
-  .nav-links { display: none; }
-  .hamburger-btn { display: flex; }
-}
-
 /* ─── Hamburger button ─── */
 .hamburger-btn {
   display: none;
@@ -243,4 +237,10 @@ button {
 }
 .mobile-menu-link:active {
   color: #7A7A6A;
+}
+
+/* Très petit écran — ≤ 480px */
+@media (max-width: 480px) {
+  .nav-links { display: none; }
+  .hamburger-btn { display: flex; }
 }
