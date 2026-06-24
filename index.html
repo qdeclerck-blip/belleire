@@ -89,17 +89,16 @@ function Photo({ src, alt, style = {} }) {
 function Nav() {
   const links = ['Bouquets', 'Installations', 'SWAP', 'À propos'];
   return (
-    <nav style={{
+    <nav className="nav-bar" style={{
       position: 'sticky', top: 0, zIndex: 200,
       background: 'rgba(240,236,216,0.92)',
       backdropFilter: 'blur(16px)',
       borderBottom: '1px solid rgba(61,58,44,0.13)',
-      padding: '0 48px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       height: '60px',
     }}>
       <span className="logo" style={{ fontSize: '1.45rem', color: '#3D3A2C' }}>belleire</span>
-      <div style={{ display: 'flex', gap: '32px', marginLeft: 'auto' }}>
+      <div className="nav-links" style={{ marginLeft: 'auto' }}>
         {links.map(l => {
           const [h, setH] = useState(false);
           return (
@@ -155,9 +154,10 @@ function Hero() {
           background: blobCool, filter: 'blur(90px)', opacity: 0.46,
         }}/>
       </div>
-      <div style={{
+      <div className="section-px" style={{
         flex: 1,
-        padding: 'clamp(90px,9vw,130px) clamp(48px,6vw,96px) clamp(48px,6vw,80px)',
+        paddingTop: 'clamp(90px,9vw,130px)',
+        paddingBottom: 'clamp(48px,6vw,80px)',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
         position: 'relative', zIndex: 2, maxWidth: '680px',
       }}>
@@ -204,19 +204,19 @@ const colData = [
 
 function Collections() {
   return (
-    <section style={{ padding: '72px 48px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
+    <section className="section-px" style={{ paddingTop: '72px', paddingBottom: '72px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
       <div className="blob d3" style={{
         width: '380px', height: '300px', top: '-90px', right: '-70px',
         background: blobWarm, filter: 'blur(84px)', opacity: 0.30,
       }}/>
-      <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 2 }}>
+      <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '12px', position: 'relative', zIndex: 2 }}>
         <div>
           <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '10px' }}>collections</span>
           <p className="logo" style={{ fontSize: 'clamp(28px,4.5vw,56px)', color: '#3D3A2C', lineHeight: 1.0 }}>installations</p>
         </div>
         <a href="#" style={{ fontSize: '0.625rem', color: '#7A7A6A', letterSpacing: '0.06em', borderBottom: '1px solid rgba(61,58,44,0.22)', paddingBottom: '2px' }}>voir tout →</a>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '16px', position: 'relative', zIndex: 2 }}>
+      <div className="grid-cols-4" style={{ position: 'relative', zIndex: 2 }}>
         {colData.map((col, i) => {
           const [hov, setHov] = useState(false);
           return (
@@ -291,9 +291,9 @@ function ProductGrid() {
     : products.filter(p => parseInt(p.price) < 100);
 
   return (
-    <section style={{ padding: '72px 48px 80px', background: '#EEEADB', position: 'relative', overflow: 'hidden' }}>
+    <section className="section-px" style={{ paddingTop: '72px', paddingBottom: '80px', background: '#EEEADB', position: 'relative', overflow: 'hidden' }}>
       <div className="blob d2" style={{ width: '300px', height: '240px', bottom: '-60px', left: '-50px', background: blobCool, filter: 'blur(80px)', opacity: 0.40 }}/>
-      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 2 }}>
+      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '12px', position: 'relative', zIndex: 2 }}>
         <div>
           <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '10px' }}>shop</span>
           <p className="logo" style={{ fontSize: 'clamp(26px,4vw,52px)', color: '#3D3A2C', lineHeight: 1.0 }}>bouquets</p>
@@ -313,7 +313,7 @@ function ProductGrid() {
           );
         })}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '16px', position: 'relative', zIndex: 2 }}>
+      <div className="grid-cols-3" style={{ position: 'relative', zIndex: 2 }}>
         {visible.map((p, i) => <ProductCard key={i} p={p}/>)}
       </div>
     </section>
@@ -328,9 +328,8 @@ function FeatureStrip() {
     ['3 · belleire swap',  'changez quand vous voulez — −25% sur la suivante.'],
   ];
   return (
-    <section style={{
-      background: '#F0ECD8', padding: '80px 48px',
-      display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center',
+    <section className="section-px grid-2col" style={{
+      background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px',
       position: 'relative', overflow: 'hidden',
       borderTop: '1px solid rgba(61,58,44,0.13)',
     }}>
@@ -373,9 +372,8 @@ function FeatureStrip() {
 /* ─── À propos ─── */
 function APropos() {
   return (
-    <section style={{
-      background: '#F0ECD8', padding: '80px 48px',
-      display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center',
+    <section className="section-px grid-2col" style={{
+      background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px',
       position: 'relative', overflow: 'hidden',
     }}>
       <div className="blob" style={{ width: '480px', height: '360px', top: '-80px', left: '-60px', background: blobCool, filter: 'blur(100px)', opacity: 0.32 }}/>
@@ -406,23 +404,75 @@ function APropos() {
 }
 
 /* ─── Contact ─── */
+/*
+ * CONFIGURATION — créer un compte sur https://formspree.io
+ * puis remplacer la valeur ci-dessous par votre ID de formulaire.
+ */
+const FORM_ENDPOINT = 'https://formspree.io/f/mbdvdope';
+
 function Contact() {
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ nom: '', email: '', message: '' });
+  const [sent, setSent]         = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+  const [form, setForm]         = useState({ nom: '', email: '', message: '' });
+  const [honeypot, setHoneypot] = useState('');
+  const loadTime                = React.useRef(Date.now());
+
   const update = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    // Anti-spam 1 : honeypot rempli → bot silencieux
+    if (honeypot) { setSent(true); return; }
+
+    // Anti-spam 2 : soumission < 3 s après affichage → bot probable
+    if (Date.now() - loadTime.current < 3000) {
+      setError('Merci de prendre un moment pour compléter le formulaire.');
+      return;
+    }
+
+    // Anti-spam 3 : rate limiting côté client (max 3 envois / heure)
+    const now    = Date.now();
+    const LS_KEY = 'belleire_form_ts';
+    const recent = (JSON.parse(localStorage.getItem(LS_KEY) || '[]'))
+                     .filter(t => now - t < 3_600_000);
+    if (recent.length >= 3) {
+      setError('Trop de tentatives. Veuillez réessayer dans une heure ou nous appeler directement.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body:    JSON.stringify({ nom: form.nom, email: form.email, message: form.message }),
+      });
+      if (!res.ok) throw new Error();
+      localStorage.setItem(LS_KEY, JSON.stringify([...recent, now]));
+      setSent(true);
+    } catch {
+      setError("Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const inputStyle = {
     fontFamily: "'Bodoni Moda',Georgia,serif", fontSize: '0.95rem',
     background: 'transparent', border: 'none', borderBottom: '1px solid rgba(61,58,44,0.22)',
     padding: '8px 0', color: '#3D3A2C', outline: 'none', width: '100%',
   };
   return (
-    <section style={{ background: '#F0ECD8', padding: '80px 48px', position: 'relative', overflow: 'hidden' }}>
+    <section className="section-px" style={{ background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px', position: 'relative', overflow: 'hidden' }}>
       <div className="blob" style={{ width: '320px', height: '260px', top: '-60px', right: '-40px', background: blobWarm, filter: 'blur(100px)', opacity: 0.28 }}/>
       <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '20px' }}>nous joindre</span>
         <p className="logo" style={{ fontSize: 'clamp(28px,4vw,56px)', color: '#3D3A2C', lineHeight: 0.95, marginBottom: '28px' }}>contactez-nous</p>
         <div className="hl" style={{ marginBottom: '40px' }}/>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+        <div className="grid-contact">
           <div>
             <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '1.05rem', color: '#7A7A6A', lineHeight: 1.7, marginBottom: '24px' }}>
               Pour toute question sur nos compositions, le BellEire Swap ou une commande, nous sommes disponibles par téléphone ou via le formulaire.
@@ -442,10 +492,25 @@ function Contact() {
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: '12px', paddingTop: '12px' }}>
               <p className="logo" style={{ fontSize: '28pt', color: '#3D3A2C' }}>merci.</p>
               <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", color: '#7A7A6A', fontSize: '0.95rem', lineHeight: 1.6 }}>Votre message a bien été envoyé. Nous vous répondons dans les plus brefs délais.</p>
-              <button onClick={() => setSent(false)} style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.65rem', letterSpacing: '0.06em', background: 'none', border: 'none', color: '#7A7A6A', cursor: 'pointer', padding: 0, marginTop: '8px', textDecoration: 'underline' }}>envoyer un autre message</button>
+              <button
+                onClick={() => { setSent(false); setForm({ nom: '', email: '', message: '' }); }}
+                style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.65rem', letterSpacing: '0.06em', background: 'none', border: 'none', color: '#7A7A6A', cursor: 'pointer', padding: 0, marginTop: '8px', textDecoration: 'underline' }}>
+                envoyer un autre message
+              </button>
             </div>
           ) : (
-            <form onSubmit={e => { e.preventDefault(); setSent(true); }} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Honeypot — piège invisible pour les bots */}
+              <input
+                type="text"
+                name="_gotcha"
+                value={honeypot}
+                onChange={e => setHoneypot(e.target.value)}
+                className="form-honeypot"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
               <div>
                 <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.6rem', letterSpacing: '0.08em', color: '#7A7A6A', marginBottom: '6px' }}>nom</p>
                 <input value={form.nom} onChange={update('nom')} required placeholder="votre nom" style={inputStyle}/>
@@ -458,14 +523,19 @@ function Contact() {
                 <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.6rem', letterSpacing: '0.08em', color: '#7A7A6A', marginBottom: '6px' }}>message</p>
                 <textarea value={form.message} onChange={update('message')} required placeholder="votre message…" rows={4} style={{ ...inputStyle, resize: 'none', lineHeight: 1.6 }}/>
               </div>
-              <button type="submit" style={{
+              {error && (
+                <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.6rem', color: '#A03020', letterSpacing: '0.04em', lineHeight: 1.5 }}>{error}</p>
+              )}
+              <button type="submit" disabled={loading} style={{
                 fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
-                padding: '11px 28px', background: '#3D3A2C', color: '#F0ECD8',
-                border: 'none', cursor: 'pointer', alignSelf: 'flex-start', transition: 'opacity 0.3s',
+                padding: '11px 28px',
+                background: loading ? '#7A7A6A' : '#3D3A2C', color: '#F0ECD8',
+                border: 'none', cursor: loading ? 'default' : 'pointer',
+                alignSelf: 'flex-start', transition: 'opacity 0.3s',
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = '0.8'; }}
               onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                envoyer
+                {loading ? 'envoi en cours…' : 'envoyer'}
               </button>
             </form>
           )}
@@ -483,9 +553,9 @@ function Footer() {
     { title: 'belleire', links: ['à propos', 'belleire.be', 'laure dykmans'] },
   ];
   return (
-    <footer style={{ background: '#EEEADB', padding: '52px 48px 32px', borderTop: '1px solid rgba(61,58,44,0.13)', position: 'relative', overflow: 'hidden' }}>
+    <footer className="section-px" style={{ background: '#EEEADB', paddingTop: '52px', paddingBottom: '32px', borderTop: '1px solid rgba(61,58,44,0.13)', position: 'relative', overflow: 'hidden' }}>
       <div className="blob" style={{ width: '260px', height: '200px', bottom: '-60px', right: '-40px', background: blobWarm, filter: 'blur(72px)', opacity: 0.22 }}/>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '40px', marginBottom: '40px', position: 'relative', zIndex: 2 }}>
+      <div className="grid-footer-cols" style={{ position: 'relative', zIndex: 2 }}>
         <div>
           <p className="logo" style={{ fontSize: '1.6rem', color: '#3D3A2C', marginBottom: '14px', lineHeight: 1 }}>belleire</p>
           <div className="hl" style={{ marginBottom: '12px', width: '80px' }}/>
@@ -510,7 +580,7 @@ function Footer() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', position: 'relative', zIndex: 2 }}>
+      <div className="footer-bottom" style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '20px', position: 'relative', zIndex: 2 }}>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>© 2026 belleire. tous droits réservés.</span>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>+32 499 999 340</span>
       </div>
