@@ -1,17 +1,19 @@
-/* belleire — Typography Tokens v2
- * Police principale : Space Mono (Google Fonts) — Regular 400, Bold 700
- * Utilisée pour tous les textes : titres, corps, labels, captions
+/* belleire — Typography Tokens
+ * Police principale : Blake 2.0 by Barrett RM Type (licence requise)
+ * Proxy Google Fonts : Bodoni Moda opsz 96, weight 300
+ * Police secondaire : Space Mono 400
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,700;1,6..96,300;1,6..96,400&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  --font-display: 'Space Mono', Menlo, 'Courier New', monospace;
+  --font-display: 'Bodoni Moda', Georgia, serif;
   --font-mono:    'Space Mono', Menlo, 'Courier New', monospace;
-  --font-primary: var(--font-mono);
+  --font-primary: var(--font-display);
 
-  --font-logo-ls: -0.02em;
-  --font-logo-lh: 1.05;
+  --font-opsz:    'opsz' 96;
+  --font-logo-ls: -0.03em;
+  --font-logo-lh: 0.88;
 
   --text-xs:   0.625rem;
   --text-sm:   0.75rem;
