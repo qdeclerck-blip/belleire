@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>belleire — couleur, joie & originalité</title>
-  <meta name="description" content="Compositions florales originales pour vos espaces professionnels. Couleur, joie et originalité — belleire, Belgique.">
+  <title>belleire — Colour. Joy. Originality.</title>
+  <meta name="description" content="Original floral compositions for your professional spaces. Colour, joy and originality — belleire, Belgium.">
   <link rel="stylesheet" href="styles.css">
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -102,10 +102,9 @@ function Photo({ src, alt, style = {} }) {
 function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const links = [
-    { label: 'Bouquets',      href: '#bouquets'     },
-    { label: 'Installations', href: '#installations' },
-    { label: 'SWAP',          href: '#swap'          },
-    { label: 'À propos',      href: '#a-propos'      },
+    { label: 'Bouquets',   href: '#bouquets'   },
+    { label: 'Experience', href: '#experience' },
+    { label: 'À propos',   href: '#a-propos'   },
   ];
   const mobileLinks = [...links, { label: 'Contact', href: '#contact' }];
   return (
@@ -157,7 +156,7 @@ function Nav() {
 
 /* ─── Marquee ─── */
 function MarqueeBar() {
-  const items = ['couleur', '·', 'joie', '·', 'originalité', '·', 'belleire swap −25%', '·', 'vase inclus', '·', 'livraison incluse', '·'];
+  const items = ['Colour', '·', 'Joy', '·', 'Originality', '·', 'belleire swap −25%', '·', 'vase inclus', '·', 'livraison incluse', '·'];
   return (
     <div style={{
       position: 'sticky', bottom: 0, zIndex: 10,
@@ -206,7 +205,7 @@ function Hero() {
         </p>
         <div className="hl" style={{ marginBottom: '14px' }}/>
         <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', marginBottom: '36px' }}>
-          <span style={{ fontSize: '0.625rem', color: '#7A7A6A', letterSpacing: '0.04em' }}>couleur, joie &amp; originalité</span>
+          <span style={{ fontSize: '0.625rem', color: '#7A7A6A', letterSpacing: '0.04em' }}>Colour. Joy. Originality.</span>
           <span style={{ fontSize: '0.625rem', color: '#7A7A6A', letterSpacing: '0.04em' }}>dans votre espace professionnel</span>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -222,13 +221,13 @@ function Hero() {
               voir les bouquets
             </button>
           </a>
-          <a href="#swap" style={{ textDecoration: 'none' }}>
+          <a href="#experience" style={{ textDecoration: 'none' }}>
             <button style={{
               fontFamily: "'Space Mono', monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
               padding: '10px 22px', background: 'transparent', color: '#7A7A6A',
               border: '1px solid rgba(61,58,44,0.22)', cursor: 'pointer',
             }}>
-              belleire swap
+              the experience
             </button>
           </a>
         </div>
@@ -248,7 +247,7 @@ const colData = [
 
 function Collections() {
   return (
-    <section id="installations" className="section-px" style={{ paddingTop: '72px', paddingBottom: '72px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
+    <section id="installations" className="section-px" style={{ display: 'none', paddingTop: '72px', paddingBottom: '72px', background: '#F0ECD8', position: 'relative', overflow: 'hidden' }}>
       <div className="blob d3" style={{
         width: '380px', height: '300px', top: '-90px', right: '-70px',
         background: blobWarm, filter: 'blur(84px)', opacity: 0.30,
@@ -364,50 +363,168 @@ function ProductGrid() {
   );
 }
 
-/* ─── Feature Strip (BellEire SWAP) ─── */
-function FeatureStrip() {
-  const steps = [
-    ['1 · vous choisissez', 'une composition dans notre bibliothèque boutique.'],
-    ['2 · nous livrons',    'livraison et vase fournis chez vous.'],
-    ['3 · belleire swap',  'changez quand vous voulez — −25% sur la suivante.'],
+/* ─── Belleire Experience ─── */
+function BellEireExperience() {
+  const [active, setActive] = React.useState('keep');
+
+  const tabs = [
+    { id: 'keep',      label: 'Keep' },
+    { id: 'swap',      label: 'Swap' },
+    { id: 'subscribe', label: 'Subscribe' },
   ];
+
   return (
-    <section id="swap" className="section-px grid-2col" style={{
+    <section id="experience" className="section-px" style={{
       background: '#F0ECD8', paddingTop: '80px', paddingBottom: '80px',
       position: 'relative', overflow: 'hidden',
       borderTop: '1px solid rgba(61,58,44,0.13)',
     }}>
       <div className="blob d1" style={{ width: '420px', height: '340px', top: '-100px', right: '-80px', background: blobWarm, filter: 'blur(88px)', opacity: 0.34 }}/>
       <div className="blob d3" style={{ width: '280px', height: '220px', bottom: '-60px', left: '-50px', background: blobCool, filter: 'blur(74px)', opacity: 0.38 }}/>
+
       <div style={{ position: 'relative', zIndex: 2 }}>
-        <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '20px' }}>belleire swap</span>
+        <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '20px' }}>our offer</span>
         <p className="logo" style={{ fontSize: 'clamp(32px,5vw,72px)', color: '#3D3A2C', lineHeight: 0.92, marginBottom: '28px' }}>
-          changez quand<br/>vous voulez.
+          the belleire<br/>experience.
         </p>
-        <div className="hl" style={{ marginBottom: '20px' }}/>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
-          {steps.map(([step, desc]) => (
-            <div key={step} style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '16px' }}>
-              <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.78rem', color: '#3D3A2C', letterSpacing: '0.04em', marginBottom: '6px' }}>{step}</p>
-              <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '1.05rem', color: '#7A7A6A', lineHeight: 1.65 }}>{desc}</p>
-            </div>
+        <div className="hl" style={{ marginBottom: '36px' }}/>
+
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: '0', marginBottom: '48px', borderBottom: '1px solid rgba(61,58,44,0.15)' }}>
+          {tabs.map(tab => (
+            <button key={tab.id} onClick={() => setActive(tab.id)} style={{
+              fontFamily: "'Space Mono',monospace", fontSize: '0.78rem', letterSpacing: '0.08em',
+              padding: '10px 28px', cursor: 'pointer', background: 'transparent',
+              border: 'none', borderBottom: active === tab.id ? '2px solid #3D3A2C' : '2px solid transparent',
+              color: active === tab.id ? '#3D3A2C' : '#7A7A6A',
+              marginBottom: '-1px', transition: 'all 200ms',
+            }}>{tab.label}</button>
           ))}
         </div>
-        <button style={{
-          fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
-          padding: '11px 24px', background: '#3D3A2C', color: '#F0ECD8',
-          border: 'none', cursor: 'pointer',
-        }}
-        onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-        onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-          nous contacter
-        </button>
-      </div>
-      {/* Photo Flamingo — assets/photos/flamingo.png */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
-        <div style={{ width: '100%', aspectRatio: '4/5', border: '1px solid rgba(61,58,44,0.10)', overflow: 'hidden' }}>
-          <Photo src="assets/photos/flamingo.png" alt="flamingo belleire"/>
-        </div>
+
+        {/* Keep */}
+        {active === 'keep' && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+            <div>
+              <p className="logo" style={{ fontSize: 'clamp(22px,3vw,40px)', color: '#3D3A2C', marginBottom: '20px', lineHeight: 1 }}>
+                gardez votre bouquet.
+              </p>
+              <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '1.05rem', color: '#7A7A6A', lineHeight: 1.7, marginBottom: '24px' }}>
+                Choisissez la composition qui habillera votre espace. Chaque bouquet est livré avec son vase, prêt à poser. Vous le gardez aussi longtemps que vous le souhaitez.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
+                {[
+                  ['livraison incluse', 'vase fourni, installation comprise.'],
+                  ['compositions originales', '7 bouquets au catalogue, des nouvelles en cours.'],
+                  ['à partir de 70 €', "de 70 € à 220 € HTVA selon la composition."],
+                ].map(([t, d]) => (
+                  <div key={t} style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '12px' }}>
+                    <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', color: '#3D3A2C', letterSpacing: '0.04em', marginBottom: '4px' }}>{t}</p>
+                    <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '0.95rem', color: '#7A7A6A', lineHeight: 1.5 }}>{d}</p>
+                  </div>
+                ))}
+              </div>
+              <a href="#bouquets" style={{ textDecoration: 'none' }}>
+                <button style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
+                  padding: '11px 24px', background: '#3D3A2C', color: '#F0ECD8',
+                  border: 'none', cursor: 'pointer',
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                  voir les bouquets
+                </button>
+              </a>
+            </div>
+            <div style={{ width: '100%', aspectRatio: '4/5', border: '1px solid rgba(61,58,44,0.10)', overflow: 'hidden' }}>
+              <Photo src="assets/photos/samba.jpeg" alt="belleire bouquet"/>
+            </div>
+          </div>
+        )}
+
+        {/* Swap */}
+        {active === 'swap' && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+            <div>
+              <p className="logo" style={{ fontSize: 'clamp(22px,3vw,40px)', color: '#3D3A2C', marginBottom: '20px', lineHeight: 1 }}>
+                changez quand<br/>vous voulez.
+              </p>
+              <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '1.05rem', color: '#7A7A6A', lineHeight: 1.7, marginBottom: '24px' }}>
+                Vous êtes déjà client belleire ? Le Swap est fait pour vous. Dès que votre bouquet a fait son temps, échangez-le contre une nouvelle composition — et bénéficiez automatiquement de <strong style={{ color: '#3D3A2C', fontWeight: 600 }}>−25%</strong> sur le suivant.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
+                {[
+                  ['réservé aux clients existants', 'vous avez déjà un bouquet belleire ? le swap s\'active automatiquement.'],
+                  ['−25% garanti', 'sur chaque nouveau bouquet échangé.'],
+                  ['sans contrainte', 'pas d\'abonnement, pas d\'engagement — vous choisissez le moment.'],
+                ].map(([t, d]) => (
+                  <div key={t} style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '12px' }}>
+                    <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', color: '#3D3A2C', letterSpacing: '0.04em', marginBottom: '4px' }}>{t}</p>
+                    <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '0.95rem', color: '#7A7A6A', lineHeight: 1.5 }}>{d}</p>
+                  </div>
+                ))}
+              </div>
+              <a href="#contact" style={{ textDecoration: 'none' }}>
+                <button style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
+                  padding: '11px 24px', background: '#3D3A2C', color: '#F0ECD8',
+                  border: 'none', cursor: 'pointer',
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                  nous contacter
+                </button>
+              </a>
+            </div>
+            <div style={{ width: '100%', aspectRatio: '4/5', border: '1px solid rgba(61,58,44,0.10)', overflow: 'hidden' }}>
+              <Photo src="assets/photos/flamingo.png" alt="belleire swap"/>
+            </div>
+          </div>
+        )}
+
+        {/* Subscribe */}
+        {active === 'subscribe' && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+            <div>
+              <p className="logo" style={{ fontSize: 'clamp(22px,3vw,40px)', color: '#3D3A2C', marginBottom: '20px', lineHeight: 1 }}>
+                vos bouquets,<br/>en continu.
+              </p>
+              <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '1.05rem', color: '#7A7A6A', lineHeight: 1.7, marginBottom: '24px' }}>
+                À partir de 3 bouquets, belleire prend en charge le renouvellement régulier de vos compositions. Nous venons récupérer les anciens et installer les nouveaux, à la fréquence qui vous convient. Un espace toujours vivant, sans effort de votre part.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
+                {[
+                  ['à partir de 3 bouquets', 'idéal pour les bureaux, halls d\'accueil, espaces clients.'],
+                  ['sur mesure', 'type de composition, nombre de bouquets et fréquence adaptés à vos besoins.'],
+                  ['devis personnalisé', 'contactez-nous et nous construisons ensemble votre offre.'],
+                ].map(([t, d]) => (
+                  <div key={t} style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '12px' }}>
+                    <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', color: '#3D3A2C', letterSpacing: '0.04em', marginBottom: '4px' }}>{t}</p>
+                    <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '0.95rem', color: '#7A7A6A', lineHeight: 1.5 }}>{d}</p>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: '#EEEADB', border: '1px solid rgba(61,58,44,0.13)', padding: '20px 24px', marginBottom: '24px' }}>
+                <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.65rem', letterSpacing: '0.06em', color: '#3D3A2C', marginBottom: '6px' }}>prêt à renouveler votre espace ?</p>
+                <p style={{ fontFamily: "'Bodoni Moda',Georgia,serif", fontWeight: 400, fontSize: '0.95rem', color: '#7A7A6A', lineHeight: 1.55 }}>Parlez-nous de votre espace, du nombre de bouquets souhaités et de la fréquence envisagée. Nous vous préparons un devis dans les 24h.</p>
+              </div>
+              <a href="#contact" style={{ textDecoration: 'none' }}>
+                <button style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.72rem', letterSpacing: '0.06em',
+                  padding: '11px 24px', background: '#3D3A2C', color: '#F0ECD8',
+                  border: 'none', cursor: 'pointer',
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                  demander un devis
+                </button>
+              </a>
+            </div>
+            <div style={{ width: '100%', aspectRatio: '4/5', border: '1px solid rgba(61,58,44,0.10)', overflow: 'hidden' }}>
+              <Photo src="assets/photos/eventail-pastel.jpeg" alt="belleire subscribe"/>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -602,8 +719,8 @@ function Footer() {
       { label: 'eventail pastel',href: '#bouquets' },
     ]},
     { title: 'aide', links: [
-      { label: 'belleire swap', href: '#swap'    },
-      { label: 'contact',       href: '#contact' },
+      { label: 'the experience', href: '#experience' },
+      { label: 'contact',        href: '#contact'    },
     ]},
     { title: 'belleire', links: [
       { label: 'à propos', href: '#a-propos' },
@@ -616,7 +733,7 @@ function Footer() {
         <div>
           <p className="logo" style={{ fontSize: '1.6rem', color: '#3D3A2C', marginBottom: '14px', lineHeight: 1 }}>belleire</p>
           <div className="hl" style={{ marginBottom: '12px', width: '80px' }}/>
-          <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', color: '#7A7A6A', lineHeight: 1.9 }}>couleur, joie &amp; originalité<br/>belleire.be · belgique</p>
+          <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', color: '#7A7A6A', lineHeight: 1.9 }}>Colour. Joy. Originality.<br/>belleire.be · belgique</p>
         </div>
         {cols.map(col => (
           <div key={col.title}>
@@ -656,7 +773,7 @@ function App() {
       <div className="hl"/>
       <Collections/>
       <div className="hl"/>
-      <FeatureStrip/>
+      <BellEireExperience/>
       <div className="hl"/>
       <APropos/>
       <div className="hl"/>
