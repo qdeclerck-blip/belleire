@@ -254,8 +254,9 @@ button {
 }
 
 @media (max-width: 768px) {
-  .hero-carousel-wrap { display: none; }
-  .hero-text { width: 100% !important; }
+  .hero-inner { flex-direction: column !important; }
+  .hero-carousel-wrap { display: block; height: 72vw; min-height: 260px; max-height: 420px; }
+  .hero-text { width: 100% !important; padding-top: 48px !important; padding-bottom: 32px !important; }
 }
 
 /* ─── Belleire Experience — 3 colonnes ─── */
