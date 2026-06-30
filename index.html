@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <!-- Formulaire statique pour détection Netlify Forms (ne s'affiche pas) -->
@@ -30,12 +31,16 @@
 
 const { useState, useEffect, useRef } = React;
 
+/* ─── CMS Supabase ─── */
+const SUPABASE_URL      = 'https://kvakghyweajejkionjtc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2YWtnaHl3ZWFqZWpraW9uanRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NDcyMjksImV4cCI6MjA5ODIyMzIyOX0.szLYJmwaJOY6SsBH3Wk4N6NNLNjB63v7Rp_uNayk-kU';
+
 /* ─── Gradients blobs ─── */
 const blobWarm = 'radial-gradient(ellipse, #E8974A 0%, #D4603A 36%, #CC1FCC 70%, transparent 100%)';
 const blobCool = 'radial-gradient(ellipse, #C8E0D8 0%, #A8C4BA 55%, transparent 100%)';
 
 /* ─── Translations ─── */
-const T = {
+let T = {
   fr: {
     nav: ['Bouquets', 'Experience', 'À propos'],
     mobileNav: ['Bouquets', 'Experience', 'À propos', 'Contact'],
@@ -241,7 +246,7 @@ const T = {
 };
 
 /* ─── Catalogue produits ─── */
-const products = [
+let products = [
   {
     title:      'Samba',
     subtitleFr: 'envoûtant · une danse de couleurs et de vie',
@@ -1002,8 +1007,45 @@ function Footer({ lang }) {
 /* ─── App ─── */
 function App() {
   const [lang, setLang] = useState('fr');
+  const [cmsKey, setCmsKey] = useState(0);
+
+  useEffect(() => {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    Promise.all([
+      sb.from('belleire_bouquets').select('*').eq('active', true).order('sort_order'),
+      sb.from('belleire_translations').select('*'),
+    ]).then(([{ data: bd }, { data: td }]) => {
+      if (bd && bd.length > 0) {
+        products.length = 0;
+        bd.forEach(b => products.push({
+          title:      b.title,
+          subtitleFr: b.subtitle_fr,
+          subtitleEn: b.subtitle_en,
+          price:      b.price,
+          dims:       b.dims,
+          img:        b.img_url,
+          ...(b.tag ? { tag: b.tag } : {}),
+        }));
+      }
+      if (td) {
+        for (const { key, value } of td) {
+          const parts = key.split('.');
+          const l = parts.pop();
+          if (!T[l]) continue;
+          let obj = T[l];
+          for (let i = 0; i < parts.length - 1; i++) {
+            if (!obj || obj[parts[i]] === undefined) { obj = null; break; }
+            obj = obj[parts[i]];
+          }
+          if (obj && parts.length > 0) obj[parts[parts.length - 1]] = value;
+        }
+      }
+      setCmsKey(k => k + 1);
+    }).catch(() => {});
+  }, []);
+
   return (
-    <div>
+    <div key={cmsKey}>
       <Nav lang={lang} setLang={setLang}/>
       <Hero lang={lang}/>
       <div className="hl"/>
