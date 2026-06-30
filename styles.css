@@ -244,3 +244,32 @@ button {
   .nav-links { display: none; }
   .hamburger-btn { display: flex; }
 }
+
+/* ─── Lang toggle (hidden on very small screens alongside hamburger) ─── */
+.lang-toggle { display: flex; }
+
+/* ─── Hero layout ─── */
+.hero-carousel-wrap {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-wrap { display: none; }
+  .hero-text { width: 100% !important; }
+}
+
+/* ─── Belleire Experience — 3 colonnes ─── */
+.grid-experience {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .grid-experience { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (max-width: 640px) {
+  .grid-experience { grid-template-columns: 1fr; }
+}
