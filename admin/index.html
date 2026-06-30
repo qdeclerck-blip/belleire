@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>belleire — CMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #F0ECD8;
+      --text:   #3D3A2C;
+      --muted:  #7A7A6A;
+      --accent: #E8974A;
+      --border: rgba(61,58,44,0.15);
+      --red:    #C0392B;
+      --green:  #27AE60;
+      --white:  #FDFBF4;
+      --radius: 4px;
+      --font:   'Space Mono', monospace;
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 0.8rem; min-height: 100vh; }
+
+    /* ── Loading ── */
+    .loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: var(--muted); }
+
+    /* ── Login ── */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box  { background: var(--white); border: 1px solid var(--border); padding: 48px 40px; width: 360px; }
+    .login-box .logo { font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); margin-bottom: 4px; }
+    .login-sub  { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .login-box label  { display: block; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 16px 0 6px; }
+    .login-box input  { width: 100%; padding: 10px 12px; border: 1px solid var(--border); background: var(--bg); font-family: var(--font); font-size: 0.8rem; color: var(--text); outline: none; }
+    .login-box input:focus { border-color: var(--text); }
+    .login-box .error { color: var(--red); font-size: 0.7rem; margin-top: 12px; }
+    .login-box button[type=submit] { width: 100%; margin-top: 24px; padding: 12px; background: var(--text); color: var(--bg); font-family: var(--font); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; }
+    .login-box button[type=submit]:hover { background: var(--accent); }
+    .login-box button[type=submit]:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── Shell ── */
+    .admin-wrap { display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-header { display: flex; align-items: center; gap: 16px; padding: 0 24px; height: 56px; background: var(--text); color: var(--bg); position: sticky; top: 0; z-index: 100; }
+    .admin-header .logo { font-size: 1.1rem; letter-spacing: -0.01em; flex: 1; }
+    .admin-email { font-size: 0.65rem; color: rgba(240,236,216,0.6); }
+    .btn-logout { padding: 6px 14px; background: none; border: 1px solid rgba(240,236,216,0.3); color: var(--bg); font-family: var(--font); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); }
+
+    .admin-body { display: flex; flex: 1; }
+
+    /* ── Sidebar ── */
+    .sidebar { width: 200px; min-height: calc(100vh - 56px); background: var(--white); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; }
+    .nav-btn { display: block; width: 100%; padding: 12px 24px; text-align: left; background: none; border: none; font-family: var(--font); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+    .nav-btn:hover { color: var(--text); background: var(--bg); }
+    .nav-btn.active { color: var(--text); font-weight: 700; border-left: 2px solid var(--accent); background: var(--bg); }
+
+    /* ── Main ── */
+    .main-content { flex: 1; padding: 32px; max-width: 960px; }
+    .tab-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .tab-header h2 { font-size: 1rem; letter-spacing: -0.01em; flex: 1; }
+
+    /* ── Buttons ── */
+    .btn-primary   { padding: 8px 18px; background: var(--text); color: var(--bg); border: none; font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-secondary { padding: 8px 18px; background: none; border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-edit   { padding: 4px 10px; background: none; border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-size: 0.65rem; cursor: pointer; margin-right: 4px; }
+    .btn-edit:hover { border-color: var(--text); }
+    .btn-delete { padding: 4px 8px; background: none; border: 1px solid transparent; color: var(--muted); font-family: var(--font); font-size: 0.8rem; cursor: pointer; }
+    .btn-delete:hover { color: var(--red); border-color: var(--red); }
+    .btn-upload { padding: 8px 14px; background: none; border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-size: 0.7rem; cursor: pointer; white-space: nowrap; }
+    .btn-upload:hover { border-color: var(--text); }
+    .btn-save-row { padding: 6px 10px; background: none; border: 1px solid var(--border); color: var(--green); font-size: 0.8rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .btn-save-row:hover { background: var(--bg); }
+    .btn-copy  { padding: 4px 8px; background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--font); font-size: 0.6rem; cursor: pointer; }
+    .btn-copy:hover { border-color: var(--text); color: var(--text); }
+
+    /* ── Messages ── */
+    .success-msg { font-size: 0.7rem; color: var(--green); margin-bottom: 16px; }
+    .error-msg   { font-size: 0.7rem; color: var(--red); margin-bottom: 16px; }
+
+    /* ── Table ── */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { text-align: left; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .data-table tr:hover td { background: rgba(61,58,44,0.03); }
+    .thumb { width: 48px; height: 48px; object-fit: cover; display: block; }
+    .badge-on  { display: inline-block; padding: 2px 8px; background: rgba(39,174,96,0.12); color: var(--green); font-size: 0.6rem; letter-spacing: 0.05em; }
+    .badge-off { display: inline-block; padding: 2px 8px; background: rgba(192,57,43,0.1); color: var(--red); font-size: 0.6rem; letter-spacing: 0.05em; }
+
+    /* ── Modal ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(61,58,44,0.5); display: flex; align-items: center; justify-content: center; z-index: 500; }
+    .modal { background: var(--white); width: 600px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; }
+    .modal-header { display: flex; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .modal-header h3 { flex: 1; font-size: 0.9rem; }
+    .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 4px 8px; }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .field input, .field textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); background: var(--bg); font-family: var(--font); font-size: 0.8rem; color: var(--text); outline: none; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--text); }
+    .field-row { display: flex; gap: 12px; }
+    .field-row .field { flex: 1; }
+    .img-preview { margin-top: 8px; width: 100%; max-height: 160px; object-fit: cover; }
+
+    /* ── Textes ── */
+    .search-input { padding: 8px 12px; border: 1px solid var(--border); background: var(--bg); font-family: var(--font); font-size: 0.75rem; color: var(--text); outline: none; width: 240px; }
+    .search-input:focus { border-color: var(--text); }
+    .text-section { margin-bottom: 28px; }
+    .section-title { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .text-row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid rgba(61,58,44,0.07); }
+    .text-key { font-size: 0.65rem; color: var(--muted); width: 200px; flex-shrink: 0; padding-top: 10px; word-break: break-all; }
+    .text-val-wrap { flex: 1; display: flex; gap: 8px; align-items: flex-start; }
+    .text-val-wrap input, .text-val-wrap textarea { flex: 1; padding: 8px 10px; border: 1px solid var(--border); background: var(--bg); font-family: var(--font); font-size: 0.78rem; color: var(--text); outline: none; resize: vertical; }
+    .text-val-wrap input:focus, .text-val-wrap textarea:focus { border-color: var(--text); }
+
+    /* ── Images ── */
+    .dropzone { border: 2px dashed var(--border); padding: 40px; text-align: center; font-size: 0.75rem; color: var(--muted); cursor: pointer; margin-bottom: 24px; transition: border-color 0.2s, background 0.2s; }
+    .dropzone:hover { border-color: var(--accent); background: rgba(232,151,74,0.04); }
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .img-card { background: var(--white); border: 1px solid var(--border); overflow: hidden; }
+    .img-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
+    .img-name { font-size: 0.6rem; color: var(--muted); padding: 6px 8px; word-break: break-all; }
+    .img-actions { display: flex; gap: 6px; padding: 6px 8px; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const SUPABASE_URL      = 'https://kcwygebmsbqqwsxolmbl.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd3lnZWJtc2JxcXdzeG9sbWJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDgyNjEsImV4cCI6MjA5ODM4NDI2MX0.fJLiIEBZKK-yqYpV-M2cpv8tqE7BzydVmTaKS2NEpeU';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ─── App ─── */
+function App() {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    sb.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    const { data: { subscription } } = sb.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) return <div className="loading">Chargement…</div>;
+  if (!session) return <Login />;
+  return <Admin session={session} />;
+}
+
+/* ─── Login ─── */
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setBusy(true);
+    setError('');
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { setError(error.message); setBusy(false); }
+  }
+
+  return (
+    <div className="login-wrap">
+      <div className="login-box">
+        <div className="logo">belleire</div>
+        <p className="login-sub">back-office</p>
+        <form onSubmit={handleSubmit}>
+          <label>Email</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+          <label>Mot de passe</label>
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+          {error && <p className="error">{error}</p>}
+          <button type="submit" disabled={busy}>{busy ? 'Connexion…' : 'Se connecter'}</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Admin shell ─── */
+function Admin({ session }) {
+  const [tab, setTab] = useState('bouquets');
+
+  return (
+    <div className="admin-wrap">
+      <header className="admin-header">
+        <span className="logo">belleire</span>
+        <span className="admin-email">{session.user.email}</span>
+        <button className="btn-logout" onClick={() => sb.auth.signOut()}>Déconnexion</button>
+      </header>
+      <div className="admin-body">
+        <nav className="sidebar">
+          {[['bouquets','Bouquets'],['textes','Textes'],['images','Images']].map(([id, label]) => (
+            <button key={id} className={`nav-btn${tab === id ? ' active' : ''}`} onClick={() => setTab(id)}>
+              {label}
+            </button>
+          ))}
+        </nav>
+        <main className="main-content">
+          {tab === 'bouquets' && <BouquetsTab />}
+          {tab === 'textes'   && <TextesTab />}
+          {tab === 'images'   && <ImagesTab />}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Bouquets ─── */
+function BouquetsTab() {
+  const [bouquets, setBouquets] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState({ text: '', ok: true });
+
+  async function load() {
+    setLoading(true);
+    const { data } = await sb.from('belleire_bouquets').select('*').order('sort_order');
+    setBouquets(data || []);
+    setLoading(false);
+  }
+
+  useEffect(() => { load(); }, []);
+
+  async function save(form) {
+    const payload = {
+      title:       form.title,
+      subtitle_fr: form.subtitle_fr,
+      subtitle_en: form.subtitle_en,
+      price:       form.price,
+      dims:        form.dims,
+      img_url:     form.img_url,
+      tag:         form.tag || null,
+      sort_order:  parseInt(form.sort_order) || 0,
+      active:      form.active,
+    };
+    let err;
+    if (form.id) {
+      ({ error: err } = await sb.from('belleire_bouquets').update(payload).eq('id', form.id));
+    } else {
+      ({ error: err } = await sb.from('belleire_bouquets').insert(payload));
+    }
+    if (err) { setMsg({ text: 'Erreur : ' + err.message, ok: false }); return; }
+    setMsg({ text: form.id ? 'Bouquet mis à jour.' : 'Bouquet créé.', ok: true });
+    setEditing(null);
+    load();
+    setTimeout(() => setMsg({ text: '', ok: true }), 3000);
+  }
+
+  async function remove(id) {
+    if (!confirm('Supprimer ce bouquet définitivement ?')) return;
+    await sb.from('belleire_bouquets').delete().eq('id', id);
+    load();
+  }
+
+  const newBouquet = () => setEditing({
+    title: '', subtitle_fr: '', subtitle_en: '',
+    price: '', dims: '', img_url: '', tag: '',
+    sort_order: bouquets.length + 1, active: true,
+  });
+
+  return (
+    <div>
+      <div className="tab-header">
+        <h2>Bouquets</h2>
+        <button className="btn-primary" onClick={newBouquet}>+ Nouveau</button>
+      </div>
+      {msg.text && <p className={msg.ok ? 'success-msg' : 'error-msg'}>{msg.text}</p>}
+      {loading ? <p>Chargement…</p> : (
+        <table className="data-table">
+          <thead>
+            <tr><th>#</th><th>Photo</th><th>Titre</th><th>Prix</th><th>Tag</th><th>Actif</th><th></th></tr>
+          </thead>
+          <tbody>
+            {bouquets.map(b => (
+              <tr key={b.id}>
+                <td>{b.sort_order}</td>
+                <td>
+                  {b.img_url
+                    ? <img src={b.img_url} alt={b.title} className="thumb" onError={e => e.target.style.display='none'} />
+                    : <div style={{width:48,height:48,background:'var(--border)'}}/>
+                  }
+                </td>
+                <td>{b.title}</td>
+                <td>{b.price}</td>
+                <td>{b.tag || '—'}</td>
+                <td><span className={b.active ? 'badge-on' : 'badge-off'}>{b.active ? 'oui' : 'non'}</span></td>
+                <td>
+                  <button className="btn-edit" onClick={() => setEditing({...b})}>Modifier</button>
+                  <button className="btn-delete" onClick={() => remove(b.id)}>×</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {editing && <BouquetModal bouquet={editing} onSave={save} onClose={() => setEditing(null)} />}
+    </div>
+  );
+}
+
+function BouquetModal({ bouquet, onSave, onClose }) {
+  const [form, setForm] = useState({...bouquet});
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef();
+
+  const set = (k, v) => setForm(f => ({...f, [k]: v}));
+
+  async function uploadImage(file) {
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split('.').pop().toLowerCase();
+    const safeName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await sb.storage.from('belleire-images').upload(safeName, file);
+    if (!error) {
+      const { data: { publicUrl } } = sb.storage.from('belleire-images').getPublicUrl(safeName);
+      set('img_url', publicUrl);
+    }
+    setUploading(false);
+  }
+
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <h3>{form.id ? 'Modifier le bouquet' : 'Nouveau bouquet'}</h3>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <div className="field-row">
+            <div className="field">
+              <label>Titre *</label>
+              <input value={form.title} onChange={e => set('title', e.target.value)} />
+            </div>
+            <div className="field" style={{maxWidth:160}}>
+              <label>Tag</label>
+              <input value={form.tag || ''} onChange={e => set('tag', e.target.value)} placeholder="nouveau" />
+            </div>
+          </div>
+          <div className="field">
+            <label>Sous-titre (FR)</label>
+            <input value={form.subtitle_fr} onChange={e => set('subtitle_fr', e.target.value)} />
+          </div>
+          <div className="field">
+            <label>Sous-titre (EN)</label>
+            <input value={form.subtitle_en} onChange={e => set('subtitle_en', e.target.value)} />
+          </div>
+          <div className="field-row">
+            <div className="field">
+              <label>Prix</label>
+              <input value={form.price} onChange={e => set('price', e.target.value)} placeholder="165 € HTVA" />
+            </div>
+            <div className="field">
+              <label>Dimensions</label>
+              <input value={form.dims} onChange={e => set('dims', e.target.value)} placeholder="L ~45 · H ~65 cm" />
+            </div>
+            <div className="field" style={{maxWidth:80}}>
+              <label>Ordre</label>
+              <input type="number" value={form.sort_order} onChange={e => set('sort_order', e.target.value)} />
+            </div>
+          </div>
+          <div className="field">
+            <label>Image</label>
+            <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
+              <input value={form.img_url} onChange={e => set('img_url', e.target.value)} style={{flex:1}} placeholder="URL ou upload →" />
+              <button className="btn-upload" onClick={() => fileRef.current.click()} disabled={uploading}>
+                {uploading ? '…' : '↑ Upload'}
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}}
+                onChange={e => uploadImage(e.target.files[0])} />
+            </div>
+            {form.img_url && (
+              <img src={form.img_url} alt="aperçu" className="img-preview"
+                onError={e => e.target.style.display='none'} />
+            )}
+          </div>
+          <div className="field">
+            <label style={{display:'flex', alignItems:'center', gap:'8px', textTransform:'none', letterSpacing:'normal'}}>
+              <input type="checkbox" checked={form.active} onChange={e => set('active', e.target.checked)} />
+              Visible sur le site
+            </label>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button className="btn-secondary" onClick={onClose}>Annuler</button>
+          <button className="btn-primary" onClick={() => onSave(form)} disabled={!form.title}>Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Textes ─── */
+function TextesTab() {
+  const [rows, setRows] = useState([]);
+  const [search, setSearch] = useState('');
+  const [saving, setSaving] = useState({});
+  const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    sb.from('belleire_translations').select('*').order('key')
+      .then(({ data }) => setRows(data || []));
+  }, []);
+
+  const updateLocal = (key, value) =>
+    setRows(r => r.map(row => row.key === key ? {...row, value} : row));
+
+  async function saveRow(key, value) {
+    setSaving(s => ({...s, [key]: true}));
+    await sb.from('belleire_translations').upsert({ key, value });
+    setSaving(s => ({...s, [key]: false}));
+    setMsg('Sauvegardé.');
+    setTimeout(() => setMsg(''), 2000);
+  }
+
+  const q = search.toLowerCase();
+  const filtered = rows.filter(r => !q || r.key.includes(q) || r.value.toLowerCase().includes(q));
+
+  const groups = {};
+  for (const row of filtered) {
+    const section = row.key.split('.')[0];
+    if (!groups[section]) groups[section] = [];
+    groups[section].push(row);
+  }
+
+  const labels = { hero: 'Hero', about: 'À propos', exp: 'Expérience', contact: 'Contact' };
+
+  return (
+    <div>
+      <div className="tab-header">
+        <h2>Textes</h2>
+        <input className="search-input" placeholder="Rechercher…" value={search} onChange={e => setSearch(e.target.value)} />
+      </div>
+      {msg && <p className="success-msg">{msg}</p>}
+      {Object.entries(groups).map(([section, srows]) => (
+        <div key={section} className="text-section">
+          <div className="section-title">{labels[section] || section}</div>
+          {srows.map(row => (
+            <div key={row.key} className="text-row">
+              <div className="text-key">{row.key}</div>
+              <div className="text-val-wrap">
+                {row.value.length > 100
+                  ? <textarea value={row.value} onChange={e => updateLocal(row.key, e.target.value)} rows={3} />
+                  : <input value={row.value} onChange={e => updateLocal(row.key, e.target.value)} />
+                }
+                <button className="btn-save-row" onClick={() => saveRow(row.key, row.value)} disabled={saving[row.key]}>
+                  {saving[row.key] ? '…' : '✓'}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Images ─── */
+function ImagesTab() {
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [copied, setCopied] = useState('');
+
+  async function load() {
+    setLoading(true);
+    const { data } = await sb.storage.from('belleire-images')
+      .list('', { sortBy: { column: 'created_at', order: 'desc' } });
+    setFiles((data || []).filter(f => f.name !== '.emptyFolderPlaceholder'));
+    setLoading(false);
+  }
+
+  useEffect(() => { load(); }, []);
+
+  function getUrl(name) {
+    return sb.storage.from('belleire-images').getPublicUrl(name).data.publicUrl;
+  }
+
+  async function upload(file) {
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split('.').pop().toLowerCase();
+    const safeName = `${Date.now()}-${file.name.replace(/[^a-z0-9._-]/gi, '_')}`;
+    const { error } = await sb.storage.from('belleire-images').upload(safeName, file, { contentType: file.type });
+    if (!error) load();
+    setUploading(false);
+  }
+
+  function copyUrl(name) {
+    navigator.clipboard.writeText(getUrl(name));
+    setCopied(name);
+    setTimeout(() => setCopied(''), 2000);
+  }
+
+  async function remove(name) {
+    if (!confirm('Supprimer cette image ?')) return;
+    await sb.storage.from('belleire-images').remove([name]);
+    load();
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) upload(file);
+  }
+
+  return (
+    <div>
+      <div className="tab-header"><h2>Images</h2></div>
+      <div
+        className="dropzone"
+        onDragOver={e => e.preventDefault()}
+        onDrop={handleDrop}
+        onClick={() => document.getElementById('img-upload').click()}
+      >
+        {uploading ? 'Upload en cours…' : 'Glisser une image ici ou cliquer pour choisir'}
+      </div>
+      <input id="img-upload" type="file" accept="image/*" style={{display:'none'}}
+        onChange={e => { if (e.target.files[0]) upload(e.target.files[0]); e.target.value=''; }} />
+      {loading ? <p>Chargement…</p> : files.length === 0 ? (
+        <p style={{color:'var(--muted)', fontSize:'0.75rem'}}>Aucune image uploadée.</p>
+      ) : (
+        <div className="img-grid">
+          {files.map(f => (
+            <div key={f.name} className="img-card">
+              <img src={getUrl(f.name)} alt={f.name} onError={e => e.target.style.background='var(--border)'} />
+              <div className="img-name">{f.name}</div>
+              <div className="img-actions">
+                <button className="btn-copy" onClick={() => copyUrl(f.name)}>
+                  {copied === f.name ? 'Copié !' : 'Copier URL'}
+                </button>
+                <button className="btn-delete" onClick={() => remove(f.name)} style={{marginLeft:'auto'}}>×</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
