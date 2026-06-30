@@ -472,6 +472,116 @@ function TextesTab() {
   );
 }
 
+/* ─── Sections images ─── */
+const SECTION_IMAGES = [
+  { key: 'image.about', label: 'À propos — Photo principale' },
+];
+
+function SectionImagePicker({ onSelect, onClose }) {
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    sb.storage.from('belleire-images')
+      .list('', { sortBy: { column: 'created_at', order: 'desc' } })
+      .then(({ data }) => {
+        setFiles((data || []).filter(f => f.name !== '.emptyFolderPlaceholder'));
+        setLoading(false);
+      });
+  }, []);
+
+  function getUrl(name) {
+    return sb.storage.from('belleire-images').getPublicUrl(name).data.publicUrl;
+  }
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }} onClick={onClose}>
+      <div style={{
+        background: 'var(--bg)', borderRadius: '12px', padding: '28px',
+        width: '680px', maxWidth: '95vw', maxHeight: '80vh', overflowY: 'auto',
+      }} onClick={e => e.stopPropagation()}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+          <h3 style={{ margin: 0, fontSize: '1rem' }}>Choisir une image</h3>
+          <button className="btn-delete" onClick={onClose} style={{ fontSize: '1.2rem', padding: '4px 10px' }}>×</button>
+        </div>
+        {loading ? <p>Chargement…</p> : files.length === 0 ? (
+          <p style={{ color: 'var(--muted)', fontSize: '0.75rem' }}>Aucune image disponible. Uploadez d'abord une image.</p>
+        ) : (
+          <div className="img-grid">
+            {files.map(f => (
+              <div key={f.name} className="img-card" style={{ cursor: 'pointer' }}
+                onClick={() => onSelect(getUrl(f.name))}>
+                <img src={getUrl(f.name)} alt={f.name} onError={e => e.target.style.background='var(--border)'} />
+                <div className="img-name">{f.name}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SectionImagesPanel() {
+  const [sectionUrls, setSectionUrls] = useState({});
+  const [picker, setPicker] = useState(null);
+  const [saving, setSaving] = useState('');
+
+  useEffect(() => {
+    sb.from('belleire_translations').select('key,value')
+      .in('key', SECTION_IMAGES.map(s => s.key))
+      .then(({ data }) => {
+        if (data) {
+          const map = {};
+          for (const { key, value } of data) map[key] = value;
+          setSectionUrls(map);
+        }
+      });
+  }, []);
+
+  async function assign(key, url) {
+    setSaving(key);
+    await sb.from('belleire_translations').upsert({ key, value: url });
+    setSectionUrls(prev => ({ ...prev, [key]: url }));
+    setSaving('');
+    setPicker(null);
+  }
+
+  return (
+    <div style={{ marginBottom: '36px', background: 'var(--surface)', borderRadius: '10px', padding: '20px' }}>
+      <h3 style={{ margin: '0 0 16px', fontSize: '0.9rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Images de sections</h3>
+      {SECTION_IMAGES.map(({ key, label }) => (
+        <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ width: '64px', height: '64px', flexShrink: 0, border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden', background: 'var(--border)' }}>
+            {sectionUrls[key] && (
+              <img src={sectionUrls[key]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            )}
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 500 }}>{label}</div>
+            {sectionUrls[key]
+              ? <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: '2px', wordBreak: 'break-all' }}>Image assignée</div>
+              : <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: '2px' }}>Aucune image assignée (fallback local)</div>
+            }
+          </div>
+          <button className="btn-copy" onClick={() => setPicker(key)} disabled={saving === key}>
+            {saving === key ? 'Sauvegarde…' : 'Changer'}
+          </button>
+        </div>
+      ))}
+      {picker && (
+        <SectionImagePicker
+          onSelect={url => assign(picker, url)}
+          onClose={() => setPicker(null)}
+        />
+      )}
+    </div>
+  );
+}
+
 /* ─── Images ─── */
 function ImagesTab() {
   const [files, setFiles] = useState([]);
@@ -524,6 +634,7 @@ function ImagesTab() {
   return (
     <div>
       <div className="tab-header"><h2>Images</h2></div>
+      <SectionImagesPanel />
       <div
         className="dropzone"
         onDragOver={e => e.preventDefault()}
