@@ -508,7 +508,7 @@ function HeroCarousel() {
         position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
         display: 'flex', gap: '8px', zIndex: 3,
       }}>
-        {carouselSlides.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => go(i)}
