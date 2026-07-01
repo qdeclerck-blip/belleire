@@ -53,13 +53,9 @@ let T = {
     shop: {
       label: 'shop',
       title: 'bouquets',
+      tagline: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels.",
       filters: ['tout', 'nouveau', 'moins de 100 €'],
       filterTags: ['tout', 'nouveau', 'moins de 100 €'],
-    },
-    whatwedo: {
-      label: 'ce que nous faisons',
-      title: ['des fleurs', 'qui restent.'],
-      p: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels. Bureaux, halls d'accueil, showrooms, salles d'attente — chaque intérieur mérite une présence végétale durable. Ni entretien, ni flétrissement : juste la beauté, là où vous en avez besoin, aussi longtemps que vous le souhaitez.",
     },
     experience: {
       label: 'notre offre',
@@ -159,13 +155,9 @@ let T = {
     shop: {
       label: 'shop',
       title: 'bouquets',
+      tagline: "belleire designs high-end artificial floral compositions for professional spaces.",
       filters: ['all', 'new', 'under 100 €'],
       filterTags: ['tout', 'nouveau', 'moins de 100 €'],
-    },
-    whatwedo: {
-      label: 'what we do',
-      title: ['flowers', 'that last.'],
-      p: "belleire designs high-end artificial floral compositions for professional spaces. Offices, reception halls, showrooms, waiting rooms — every interior deserves a lasting botanical presence. No maintenance, no wilting: just beauty, where you need it, for as long as you want it.",
     },
     experience: {
       label: 'our offer',
@@ -707,6 +699,7 @@ function ProductGrid({ lang }) {
         <div>
           <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '10px' }}>{tl.label}</span>
           <p className="logo" style={{ fontSize: 'clamp(26px,4vw,52px)', color: '#3D3A2C', lineHeight: 1.0 }}>{tl.title}</p>
+          {tl.tagline && <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.7rem', color: '#7A7A6A', lineHeight: 1.7, marginTop: '12px', maxWidth: '480px', letterSpacing: '0.01em' }}>{tl.tagline}</p>}
         </div>
       </div>
       <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
@@ -1060,83 +1053,6 @@ function Footer({ lang }) {
   );
 }
 
-/* ─── What We Do ─── */
-function WhatWeDo({ lang }) {
-  const tl = T[lang].whatwedo;
-  const imgSrc = siteImages['image.whatwedo'] || 'assets/photos/samba.jpeg';
-  return (
-    <section style={{
-      background: '#3D3A2C',
-      overflow: 'hidden',
-      position: 'relative',
-    }}>
-      <div style={{
-        display: 'flex',
-        minHeight: 'clamp(480px, 60vw, 700px)',
-      }} className="whatwedo-grid">
-        {/* Photo — colonne gauche, flex:1 comme le carousel du hero */}
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-          <img
-            src={imgSrc}
-            alt="belleire — composition florale"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-          />
-        </div>
-        {/* Texte — colonne droite, même gabarit que hero-text (width:50%, maxWidth:680px) */}
-        <div style={{
-          flex: '0 0 auto',
-          width: '50%',
-          maxWidth: '680px',
-          padding: 'clamp(56px, 8vw, 100px) clamp(32px, 6vw, 80px)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-          textAlign: 'right',
-        }}>
-          <span style={{
-            display: 'block',
-            fontFamily: "'Space Mono', monospace",
-            fontSize: '0.6rem',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'rgba(240,236,216,0.45)',
-            marginBottom: '24px',
-          }}>{tl.label}</span>
-          <div style={{
-            width: '40px',
-            height: '1px',
-            background: 'rgba(240,236,216,0.25)',
-            marginBottom: '36px',
-          }}/>
-          <h2 style={{
-            fontFamily: "'Bodoni Moda', Georgia, serif",
-            fontWeight: 300,
-            fontOpticalSizing: 'auto',
-            fontSize: 'clamp(2.4rem, 5vw, 5rem)',
-            lineHeight: 1.0,
-            letterSpacing: '-0.02em',
-            color: '#F0ECD8',
-            marginBottom: 'clamp(28px, 4vw, 52px)',
-          }}>
-            {tl.title.map((line, i) => (
-              <span key={i} style={{ display: 'block' }}>{line}</span>
-            ))}
-          </h2>
-          <p style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: 'clamp(0.7rem, 1vw, 0.8rem)',
-            lineHeight: 1.85,
-            color: 'rgba(240,236,216,0.65)',
-            maxWidth: '400px',
-            letterSpacing: '0.01em',
-          }}>{tl.p}</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ─── App ─── */
 function App() {
   const [lang, setLang] = useState('fr');
@@ -1185,7 +1101,6 @@ function App() {
     <div key={cmsKey}>
       <Nav lang={lang} setLang={setLang}/>
       <Hero lang={lang}/>
-      <WhatWeDo lang={lang}/>
       <div className="hl"/>
       <ProductGrid lang={lang}/>
       <div className="hl"/>

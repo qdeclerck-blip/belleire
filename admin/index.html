@@ -410,14 +410,8 @@ function BouquetModal({ bouquet, onSave, onClose }) {
 /* ─── Textes ─── */
 /* Clés connues affichées même si absentes de la DB (valeurs par défaut = fallback du site) */
 const KNOWN_TEXT_KEYS = [
-  { key: 'whatwedo.label.fr',   default: 'ce que nous faisons' },
-  { key: 'whatwedo.label.en',   default: 'what we do' },
-  { key: 'whatwedo.title.0.fr', default: 'des fleurs' },
-  { key: 'whatwedo.title.1.fr', default: 'qui restent.' },
-  { key: 'whatwedo.title.0.en', default: 'flowers' },
-  { key: 'whatwedo.title.1.en', default: 'that last.' },
-  { key: 'whatwedo.p.fr',       default: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels. Bureaux, halls d'accueil, showrooms, salles d'attente — chaque intérieur mérite une présence végétale durable. Ni entretien, ni flétrissement : juste la beauté, là où vous en avez besoin, aussi longtemps que vous le souhaitez." },
-  { key: 'whatwedo.p.en',       default: "belleire designs high-end artificial floral compositions for professional spaces. Offices, reception halls, showrooms, waiting rooms — every interior deserves a lasting botanical presence. No maintenance, no wilting: just beauty, where you need it, for as long as you want it." },
+  { key: 'shop.tagline.fr', default: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels." },
+  { key: 'shop.tagline.en', default: "belleire designs high-end artificial floral compositions for professional spaces." },
 ];
 
 function TextesTab() {
@@ -452,9 +446,9 @@ function TextesTab() {
   const q = search.toLowerCase();
   const filtered = rows.filter(r => !q || r.key.includes(q) || (r.value || '').toLowerCase().includes(q));
 
-  const SECTION_ORDER = ['whatwedo', 'hero', 'about', 'exp', 'contact'];
+  const SECTION_ORDER = ['shop', 'hero', 'about', 'exp', 'contact'];
   const labels = {
-    whatwedo: 'Ce que nous faisons',
+    shop: 'Bouquets',
     hero: 'Hero',
     about: 'À propos',
     exp: 'Expérience',
@@ -509,8 +503,7 @@ const SECTION_IMAGES = [
   { key: 'image.hero.2', label: 'Hero — Slide 2 (éventail pastel)', ratio: 1/1, ratioLabel: '1:1' },
   { key: 'image.hero.3', label: 'Hero — Slide 3 (carnaval)',        ratio: 1/1, ratioLabel: '1:1' },
   { key: 'image.hero.4', label: 'Hero — Slide 4 (flamingo)',        ratio: 1/1, ratioLabel: '1:1' },
-  { key: 'image.about',    label: 'À propos — Photo principale',        ratio: 4/5, ratioLabel: '4:5' },
-  { key: 'image.whatwedo', label: 'Ce que nous faisons — Photo gauche', ratio: 3/4, ratioLabel: '3:4' },
+  { key: 'image.about', label: 'À propos — Photo principale', ratio: 4/5, ratioLabel: '4:5' },
 ];
 
 /* ─── Crop modal ─── */
