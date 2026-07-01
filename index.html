@@ -53,6 +53,7 @@ let T = {
     shop: {
       label: 'shop',
       title: 'bouquets',
+      tagline: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels.",
       filters: ['tout', 'nouveau', 'moins de 100 €'],
       filterTags: ['tout', 'nouveau', 'moins de 100 €'],
     },
@@ -154,6 +155,7 @@ let T = {
     shop: {
       label: 'shop',
       title: 'bouquets',
+      tagline: "belleire designs high-end artificial floral compositions for professional spaces.",
       filters: ['all', 'new', 'under 100 €'],
       filterTags: ['tout', 'nouveau', 'moins de 100 €'],
     },
@@ -245,6 +247,9 @@ let T = {
   },
 };
 
+/* ─── Images de sections (chargées depuis le CMS) ─── */
+const siteImages = {};
+
 /* ─── Catalogue produits ─── */
 let products = [
   {
@@ -327,6 +332,45 @@ function Photo({ src, alt, style = {} }) {
   );
 }
 
+/* ─── Réseaux sociaux ─── */
+const SOCIAL_LINKS = [
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/belleire.experience',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Facebook',
+    href: 'https://www.facebook.com/belleire.experience',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+      </svg>
+    ),
+  },
+];
+
+function SocialLinks({ style = {}, className = '' }) {
+  return (
+    <div className={className} style={{ display: 'flex', alignItems: 'center', gap: '12px', ...style }}>
+      {SOCIAL_LINKS.map(({ name, href, icon }) => (
+        <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={name}
+          style={{ color: '#7A7A6A', display: 'flex', alignItems: 'center', transition: 'color 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#3D3A2C'}
+          onMouseLeave={e => e.currentTarget.style.color = '#7A7A6A'}>
+          {icon}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Nav ─── */
 function Nav({ lang, setLang }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -341,11 +385,11 @@ function Nav({ lang, setLang }) {
         background: 'rgba(240,236,216,0.92)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(61,58,44,0.13)',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        display: 'flex', alignItems: 'center',
         height: '60px',
       }}>
         <span className="logo" style={{ fontSize: '1.45rem', color: '#3D3A2C' }}>belleire</span>
-        <div className="nav-links" style={{ marginLeft: 'auto', marginRight: '24px' }}>
+        <div className="nav-links" style={{ marginLeft: '48px', marginRight: '0' }}>
           {tl.nav.map((label, i) => (
             <a key={label} href={navHrefs[i]}
               style={{ fontSize: '0.72rem', letterSpacing: '0.05em', color: '#7A7A6A', transition: 'color 0.3s' }}
@@ -355,29 +399,32 @@ function Nav({ lang, setLang }) {
             </a>
           ))}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} className="lang-toggle">
-          {['fr', 'en'].map((l, i) => (
-            <React.Fragment key={l}>
-              {i > 0 && <span style={{ fontSize: '0.6rem', color: 'rgba(61,58,44,0.3)', lineHeight: 1 }}>/</span>}
-              <button
-                onClick={() => setLang(l)}
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  padding: '4px 6px',
-                  color: lang === l ? '#3D3A2C' : '#7A7A6A',
-                  fontWeight: lang === l ? '700' : '400',
-                  transition: 'color 0.2s',
-                }}>
-                {l}
-              </button>
-            </React.Fragment>
-          ))}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <SocialLinks className="nav-social" style={{ marginRight: '8px' }}/>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} className="lang-toggle">
+            {['fr', 'en'].map((l, i) => (
+              <React.Fragment key={l}>
+                {i > 0 && <span style={{ fontSize: '0.6rem', color: 'rgba(61,58,44,0.3)', lineHeight: 1 }}>/</span>}
+                <button
+                  onClick={() => setLang(l)}
+                  style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase',
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    padding: '4px 6px',
+                    color: lang === l ? '#3D3A2C' : '#7A7A6A',
+                    fontWeight: lang === l ? '700' : '400',
+                    transition: 'color 0.2s',
+                  }}>
+                  {l}
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+          <button className="hamburger-btn" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
+            <span/><span/><span/>
+          </button>
         </div>
-        <button className="hamburger-btn" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
-          <span/><span/><span/>
-        </button>
       </nav>
       {menuOpen && (
         <div className="mobile-menu-overlay">
@@ -413,6 +460,7 @@ function Nav({ lang, setLang }) {
               </a>
             ))}
           </nav>
+          <SocialLinks style={{ padding: '32px 0 8px' }}/>
         </div>
       )}
     </>
@@ -442,7 +490,7 @@ function MarqueeBar({ lang }) {
 }
 
 /* ─── Hero Carousel ─── */
-const carouselSlides = [
+const heroFallbacks = [
   'assets/photos/samba.jpeg',
   'assets/photos/eventail-pastel.jpeg',
   'assets/photos/carnaval.png',
@@ -450,24 +498,25 @@ const carouselSlides = [
 ];
 
 function HeroCarousel() {
+  const slides = heroFallbacks.map((fb, i) => siteImages[`image.hero.${i + 1}`] || fb);
   const [current, setCurrent] = useState(0);
   const timerRef = useRef(null);
 
   const go = (idx) => {
-    setCurrent((idx + carouselSlides.length) % carouselSlides.length);
+    setCurrent((idx + slides.length) % slides.length);
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => {
-      setCurrent(c => (c + 1) % carouselSlides.length);
+      setCurrent(c => (c + 1) % slides.length);
     }, 4200);
     return () => clearInterval(timerRef.current);
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-      {carouselSlides.map((src, i) => (
-        <div key={src} style={{
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      {slides.map((src, i) => (
+        <div key={i} style={{
           position: 'absolute', inset: 0,
           opacity: i === current ? 1 : 0,
           transition: 'opacity 0.9s ease',
@@ -504,7 +553,7 @@ function HeroCarousel() {
         position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
         display: 'flex', gap: '8px', zIndex: 3,
       }}>
-        {carouselSlides.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => go(i)}
@@ -589,7 +638,6 @@ function Hero({ lang }) {
         {/* Right: carousel */}
         <div className="hero-carousel-wrap" style={{
           flex: 1, position: 'relative', overflow: 'hidden',
-          minHeight: '400px',
         }}>
           <HeroCarousel/>
         </div>
@@ -651,6 +699,7 @@ function ProductGrid({ lang }) {
         <div>
           <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.625rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7A6A', display: 'block', marginBottom: '10px' }}>{tl.label}</span>
           <p className="logo" style={{ fontSize: 'clamp(26px,4vw,52px)', color: '#3D3A2C', lineHeight: 1.0 }}>{tl.title}</p>
+          {tl.tagline && <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.7rem', color: '#7A7A6A', lineHeight: 1.7, marginTop: '12px', maxWidth: '480px', letterSpacing: '0.01em' }}>{tl.tagline}</p>}
         </div>
       </div>
       <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
@@ -753,7 +802,7 @@ function APropos({ lang }) {
       <div className="blob" style={{ position: 'absolute', width: '480px', height: '360px', top: '-80px', left: '-60px', background: blobCool, filter: 'blur(100px)', opacity: 0.32 }}/>
       <div style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ width: '100%', aspectRatio: '4/5', border: '1px solid rgba(61,58,44,0.10)', overflow: 'hidden' }}>
-          <Photo src="assets/photos/founders.jpeg" alt="Laure et David — belleire"/>
+          <Photo src={siteImages['image.about'] || 'assets/photos/founders.jpeg'} alt="Laure et David — belleire"/>
         </div>
       </div>
       <div style={{ position: 'relative', zIndex: 2 }}>
@@ -997,6 +1046,7 @@ function Footer({ lang }) {
       </div>
       <div className="footer-bottom" style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '20px', position: 'relative', zIndex: 2 }}>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>{tl.copyright}</span>
+        <SocialLinks/>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>+32 499 999 340</span>
       </div>
     </footer>
@@ -1028,6 +1078,10 @@ function App() {
       }
       if (td) {
         for (const { key, value } of td) {
+          if (key.startsWith('image.')) {
+            siteImages[key] = value;
+            continue;
+          }
           const parts = key.split('.');
           const l = parts.pop();
           if (!T[l]) continue;
