@@ -474,15 +474,15 @@ function TextesTab() {
 
 /* ─── Sections images ─── */
 const SECTION_IMAGES = [
-  { key: 'image.hero.1', label: 'Hero — Slide 1 (samba)',          ratio: 4/5 },
-  { key: 'image.hero.2', label: 'Hero — Slide 2 (éventail pastel)', ratio: 4/5 },
-  { key: 'image.hero.3', label: 'Hero — Slide 3 (carnaval)',        ratio: 4/5 },
-  { key: 'image.hero.4', label: 'Hero — Slide 4 (flamingo)',        ratio: 4/5 },
-  { key: 'image.about',  label: 'À propos — Photo principale',      ratio: 4/5 },
+  { key: 'image.hero.1', label: 'Hero — Slide 1 (samba)',           ratio: 1/1, ratioLabel: '1:1' },
+  { key: 'image.hero.2', label: 'Hero — Slide 2 (éventail pastel)', ratio: 1/1, ratioLabel: '1:1' },
+  { key: 'image.hero.3', label: 'Hero — Slide 3 (carnaval)',        ratio: 1/1, ratioLabel: '1:1' },
+  { key: 'image.hero.4', label: 'Hero — Slide 4 (flamingo)',        ratio: 1/1, ratioLabel: '1:1' },
+  { key: 'image.about',  label: 'À propos — Photo principale',      ratio: 4/5, ratioLabel: '4:5' },
 ];
 
 /* ─── Crop modal ─── */
-function CropModal({ src, ratio, onConfirm, onCancel }) {
+function CropModal({ src, ratio, ratioLabel, onConfirm, onCancel }) {
   const [imgNatural, setImgNatural] = useState(null);
   const [preview, setPreview]       = useState(null);
   const [crop, setCrop]             = useState(null);
@@ -560,7 +560,7 @@ function CropModal({ src, ratio, onConfirm, onCancel }) {
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div ref={wrapRef} style={{ background: 'var(--bg)', borderRadius: '12px', padding: '24px', width: '620px', maxWidth: '95vw' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <h3 style={{ margin: 0, fontSize: '1rem' }}>Recadrer l'image</h3>
+          <h3 style={{ margin: 0, fontSize: '1rem' }}>Recadrer l'image {ratioLabel && <span style={{ fontSize: '0.7rem', fontWeight: 400, color: 'var(--muted)', marginLeft: 8 }}>format {ratioLabel}</span>}</h3>
           <button className="btn-delete" onClick={onCancel} style={{ fontSize: '1.2rem', padding: '4px 10px' }}>×</button>
         </div>
         <p style={{ fontSize: '0.72rem', color: 'var(--muted)', margin: '0 0 14px' }}>Glissez le cadre pour choisir la zone à afficher.</p>
@@ -608,7 +608,7 @@ function CropModal({ src, ratio, onConfirm, onCancel }) {
   );
 }
 
-function SectionImagePicker({ ratio, onSelect, onClose }) {
+function SectionImagePicker({ ratio, ratioLabel, onSelect, onClose }) {
   const [files, setFiles]     = useState([]);
   const [loading, setLoading] = useState(true);
   const [cropSrc, setCropSrc] = useState(null);
@@ -631,6 +631,7 @@ function SectionImagePicker({ ratio, onSelect, onClose }) {
       <CropModal
         src={cropSrc}
         ratio={ratio}
+        ratioLabel={ratioLabel}
         onConfirm={url => { onSelect(url); setCropSrc(null); }}
         onCancel={() => setCropSrc(null)}
       />
@@ -718,6 +719,7 @@ function SectionImagesPanel() {
       {picker && (
         <SectionImagePicker
           ratio={SECTION_IMAGES.find(s => s.key === picker)?.ratio || 4/5}
+          ratioLabel={SECTION_IMAGES.find(s => s.key === picker)?.ratioLabel || '4:5'}
           onSelect={url => assign(picker, url)}
           onClose={() => setPicker(null)}
         />
