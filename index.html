@@ -383,11 +383,11 @@ function Nav({ lang, setLang }) {
         background: 'rgba(240,236,216,0.92)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(61,58,44,0.13)',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        display: 'flex', alignItems: 'center',
         height: '60px',
       }}>
         <span className="logo" style={{ fontSize: '1.45rem', color: '#3D3A2C' }}>belleire</span>
-        <div className="nav-links" style={{ marginLeft: 'auto', marginRight: '24px' }}>
+        <div className="nav-links" style={{ marginLeft: '48px', marginRight: '0' }}>
           {tl.nav.map((label, i) => (
             <a key={label} href={navHrefs[i]}
               style={{ fontSize: '0.72rem', letterSpacing: '0.05em', color: '#7A7A6A', transition: 'color 0.3s' }}
@@ -397,30 +397,32 @@ function Nav({ lang, setLang }) {
             </a>
           ))}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} className="lang-toggle">
-          {['fr', 'en'].map((l, i) => (
-            <React.Fragment key={l}>
-              {i > 0 && <span style={{ fontSize: '0.6rem', color: 'rgba(61,58,44,0.3)', lineHeight: 1 }}>/</span>}
-              <button
-                onClick={() => setLang(l)}
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  padding: '4px 6px',
-                  color: lang === l ? '#3D3A2C' : '#7A7A6A',
-                  fontWeight: lang === l ? '700' : '400',
-                  transition: 'color 0.2s',
-                }}>
-                {l}
-              </button>
-            </React.Fragment>
-          ))}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <SocialLinks className="nav-social" style={{ marginRight: '8px' }}/>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} className="lang-toggle">
+            {['fr', 'en'].map((l, i) => (
+              <React.Fragment key={l}>
+                {i > 0 && <span style={{ fontSize: '0.6rem', color: 'rgba(61,58,44,0.3)', lineHeight: 1 }}>/</span>}
+                <button
+                  onClick={() => setLang(l)}
+                  style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase',
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    padding: '4px 6px',
+                    color: lang === l ? '#3D3A2C' : '#7A7A6A',
+                    fontWeight: lang === l ? '700' : '400',
+                    transition: 'color 0.2s',
+                  }}>
+                  {l}
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+          <button className="hamburger-btn" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
+            <span/><span/><span/>
+          </button>
         </div>
-        <SocialLinks className="nav-social" style={{ marginLeft: '16px' }}/>
-        <button className="hamburger-btn" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
-          <span/><span/><span/>
-        </button>
       </nav>
       {menuOpen && (
         <div className="mobile-menu-overlay">
