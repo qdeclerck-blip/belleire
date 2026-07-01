@@ -330,6 +330,45 @@ function Photo({ src, alt, style = {} }) {
   );
 }
 
+/* ─── Réseaux sociaux ─── */
+const SOCIAL_LINKS = [
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/belleire.experience',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Facebook',
+    href: 'https://www.facebook.com/belleire.experience',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+      </svg>
+    ),
+  },
+];
+
+function SocialLinks({ style = {}, className = '' }) {
+  return (
+    <div className={className} style={{ display: 'flex', alignItems: 'center', gap: '12px', ...style }}>
+      {SOCIAL_LINKS.map(({ name, href, icon }) => (
+        <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={name}
+          style={{ color: '#7A7A6A', display: 'flex', alignItems: 'center', transition: 'color 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#3D3A2C'}
+          onMouseLeave={e => e.currentTarget.style.color = '#7A7A6A'}>
+          {icon}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Nav ─── */
 function Nav({ lang, setLang }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -378,6 +417,7 @@ function Nav({ lang, setLang }) {
             </React.Fragment>
           ))}
         </div>
+        <SocialLinks className="nav-social" style={{ marginLeft: '16px' }}/>
         <button className="hamburger-btn" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
           <span/><span/><span/>
         </button>
@@ -416,6 +456,7 @@ function Nav({ lang, setLang }) {
               </a>
             ))}
           </nav>
+          <SocialLinks style={{ padding: '32px 0 8px' }}/>
         </div>
       )}
     </>
@@ -1000,6 +1041,7 @@ function Footer({ lang }) {
       </div>
       <div className="footer-bottom" style={{ borderTop: '1px solid rgba(61,58,44,0.13)', paddingTop: '20px', position: 'relative', zIndex: 2 }}>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>{tl.copyright}</span>
+        <SocialLinks/>
         <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.55rem', color: '#7A7A6A', letterSpacing: '0.05em' }}>+32 499 999 340</span>
       </div>
     </footer>
