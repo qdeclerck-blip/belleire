@@ -408,6 +408,18 @@ function BouquetModal({ bouquet, onSave, onClose }) {
 }
 
 /* ─── Textes ─── */
+/* Clés connues affichées même si absentes de la DB (valeurs par défaut = fallback du site) */
+const KNOWN_TEXT_KEYS = [
+  { key: 'whatwedo.label.fr',   default: 'ce que nous faisons' },
+  { key: 'whatwedo.label.en',   default: 'what we do' },
+  { key: 'whatwedo.title.0.fr', default: 'des fleurs' },
+  { key: 'whatwedo.title.1.fr', default: 'qui restent.' },
+  { key: 'whatwedo.title.0.en', default: 'flowers' },
+  { key: 'whatwedo.title.1.en', default: 'that last.' },
+  { key: 'whatwedo.p.fr',       default: "belleire conçoit des compositions florales artificielles haut de gamme pour les espaces professionnels. Bureaux, halls d'accueil, showrooms, salles d'attente — chaque intérieur mérite une présence végétale durable. Ni entretien, ni flétrissement : juste la beauté, là où vous en avez besoin, aussi longtemps que vous le souhaitez." },
+  { key: 'whatwedo.p.en',       default: "belleire designs high-end artificial floral compositions for professional spaces. Offices, reception halls, showrooms, waiting rooms — every interior deserves a lasting botanical presence. No maintenance, no wilting: just beauty, where you need it, for as long as you want it." },
+];
+
 function TextesTab() {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState('');
@@ -416,7 +428,14 @@ function TextesTab() {
 
   useEffect(() => {
     sb.from('belleire_translations').select('*').order('key')
-      .then(({ data }) => setRows(data || []));
+      .then(({ data }) => {
+        const dbRows = data || [];
+        const dbKeys = new Set(dbRows.map(r => r.key));
+        const seedRows = KNOWN_TEXT_KEYS
+          .filter(k => !dbKeys.has(k.key))
+          .map(k => ({ key: k.key, value: k.default }));
+        setRows([...dbRows, ...seedRows]);
+      });
   }, []);
 
   const updateLocal = (key, value) =>
@@ -431,7 +450,16 @@ function TextesTab() {
   }
 
   const q = search.toLowerCase();
-  const filtered = rows.filter(r => !q || r.key.includes(q) || r.value.toLowerCase().includes(q));
+  const filtered = rows.filter(r => !q || r.key.includes(q) || (r.value || '').toLowerCase().includes(q));
+
+  const SECTION_ORDER = ['whatwedo', 'hero', 'about', 'exp', 'contact'];
+  const labels = {
+    whatwedo: 'Ce que nous faisons',
+    hero: 'Hero',
+    about: 'À propos',
+    exp: 'Expérience',
+    contact: 'Contact',
+  };
 
   const groups = {};
   for (const row of filtered) {
@@ -440,7 +468,10 @@ function TextesTab() {
     groups[section].push(row);
   }
 
-  const labels = { hero: 'Hero', about: 'À propos', exp: 'Expérience', contact: 'Contact' };
+  const orderedSections = [
+    ...SECTION_ORDER.filter(s => groups[s]),
+    ...Object.keys(groups).filter(s => !SECTION_ORDER.includes(s)),
+  ];
 
   return (
     <div>
@@ -449,16 +480,16 @@ function TextesTab() {
         <input className="search-input" placeholder="Rechercher…" value={search} onChange={e => setSearch(e.target.value)} />
       </div>
       {msg && <p className="success-msg">{msg}</p>}
-      {Object.entries(groups).map(([section, srows]) => (
+      {orderedSections.map(section => (
         <div key={section} className="text-section">
           <div className="section-title">{labels[section] || section}</div>
-          {srows.map(row => (
+          {groups[section].map(row => (
             <div key={row.key} className="text-row">
               <div className="text-key">{row.key}</div>
               <div className="text-val-wrap">
-                {row.value.length > 100
-                  ? <textarea value={row.value} onChange={e => updateLocal(row.key, e.target.value)} rows={3} />
-                  : <input value={row.value} onChange={e => updateLocal(row.key, e.target.value)} />
+                {(row.value || '').length > 100
+                  ? <textarea value={row.value || ''} onChange={e => updateLocal(row.key, e.target.value)} rows={3} />
+                  : <input value={row.value || ''} onChange={e => updateLocal(row.key, e.target.value)} />
                 }
                 <button className="btn-save-row" onClick={() => saveRow(row.key, row.value)} disabled={saving[row.key]}>
                   {saving[row.key] ? '…' : '✓'}
