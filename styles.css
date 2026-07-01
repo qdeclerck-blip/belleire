@@ -95,16 +95,20 @@ button {
   padding: 1rem;
 }
 
-/* ─── What We Do — 2 colonnes, colonne sur mobile ─── */
+/* ─── What We Do — bascule en colonne sur mobile ─── */
 @media (max-width: 768px) {
   .whatwedo-grid {
-    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
   }
   .whatwedo-grid > div:first-child {
+    flex: none !important;
+    width: 100% !important;
     min-height: 56vw;
-    position: relative !important;
   }
   .whatwedo-grid > div:last-child {
+    flex: none !important;
+    width: 100% !important;
+    max-width: none !important;
     align-items: flex-start !important;
     text-align: left !important;
   }

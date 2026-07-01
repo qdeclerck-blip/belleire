@@ -1071,20 +1071,22 @@ function WhatWeDo({ lang }) {
       position: 'relative',
     }}>
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        display: 'flex',
         minHeight: 'clamp(480px, 60vw, 700px)',
       }} className="whatwedo-grid">
-        {/* Photo — colonne gauche */}
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Photo — colonne gauche, flex:1 comme le carousel du hero */}
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
           <img
             src={imgSrc}
             alt="belleire — composition florale"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           />
         </div>
-        {/* Texte — colonne droite, aligné à droite */}
+        {/* Texte — colonne droite, même gabarit que hero-text (width:50%, maxWidth:680px) */}
         <div style={{
+          flex: '0 0 auto',
+          width: '50%',
+          maxWidth: '680px',
           padding: 'clamp(56px, 8vw, 100px) clamp(32px, 6vw, 80px)',
           display: 'flex',
           flexDirection: 'column',
