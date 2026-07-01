@@ -95,6 +95,21 @@ button {
   padding: 1rem;
 }
 
+/* ─── What We Do — 2 colonnes, colonne sur mobile ─── */
+@media (max-width: 768px) {
+  .whatwedo-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .whatwedo-grid > div:first-child {
+    min-height: 56vw;
+    position: relative !important;
+  }
+  .whatwedo-grid > div:last-child {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+}
+
 /* ─── Honeypot anti-spam — caché aux humains, visible aux bots ─── */
 .form-honeypot {
   position: absolute;
